@@ -9,7 +9,7 @@ import iqMath
 
 def main():
     expression = input("Please input the expression to evaluate: ")
-    evaluate(expression)
+    print(evaluate(expression))
 
 
 def evaluate(string):
@@ -24,17 +24,17 @@ def evaluate(string):
 
 
 def peval(string):
-    pass
+    return None
 
 
 def complete(string):
     operations = list("+-*/")
-    breakable = False
+    literal = True
+    
     for item in operations: #Are there unperformed operations?
         if item in string:
-            breakable = True
-    for char in string[0:3]: #Are there any functions being performed?
-        if char.isDigit():
-            breakable = True
+            literal = False
+    if not string[0].isdigit(): #Are there functions or uresolved variables?
+        literal = False
 
-    return not breakable
+    return literal

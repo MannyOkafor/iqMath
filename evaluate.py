@@ -20,11 +20,24 @@ def evaluate(string):
     if complete(string): #Check if there are empty 
         return string
 
-    peval(string) #scans for parentheses
+    string = peval(string) #scans for parentheses and evaluates them
+    return string
 
 
 def peval(string):
-    return None
+    if "(" in string:
+        if ")" in string[::-1]:
+            temp = string[string.index('(')+1:len(string) - string[::-1].index(')')-1]
+            return string[0:string.index('(')] + evaluate (temp) + string[len(string) - string[::-1].index(')')+1:]
+        else:
+            print("Error: Did not enclose parentheses. Try again!")
+            main()
+
+    if ")" in string:
+        print("Error: Unexpected ')'.")
+        main()
+    else:
+        return string
 
 
 def complete(string):

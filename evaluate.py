@@ -14,6 +14,8 @@ def main():
 
 def evaluate(string):
     
+    string = string.strip().replace(' ', '') #removes spaces, tabs, newlines
+    
     if string == "back()": #Go back
         iqMath.main()
         

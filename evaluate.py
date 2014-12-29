@@ -29,20 +29,16 @@ def evaluate(string):
 
 def md(string):
     if "*" in string or "/" in string:
-        mindex = -1
-        dindex = -1
+        mindex = len(string)
+        dindex = len(string)
         if "*" in string:
             mindex = string.index("*")
         if "/" in string:
             dindex = string.index("/")
-        if mindex == -1:
-            if float(evaluate(string[dindex+1:])) == 0.0:
-                print("Error: Cannot divide by 0")
-                main()
-                return
-            return str(float(evaluate(string[:dindex]))/float(evaluate(string[dindex+1:])))
-        if dindex == -1:
+        if mindex < dindex:
             return str(float(evaluate(string[:mindex]))*float(evaluate(string[mindex+1:])))
+        else:
+            return str(float(evaluate(string[:dindex]))/float(evaluate(string[dindex+1:])))
     else:
         return string
 

@@ -23,8 +23,8 @@ def evaluate(string):
         
     if complete(string): #Check if there are empty 
         return string
-
-    string = peval(string) #scans for parentheses and evaluates them
+    while "(" in string:
+        string = peval(string) #scans for parentheses and evaluates them
     string = md(string)
     string = addsub(string)
     return string
@@ -97,16 +97,24 @@ def md(string):
 
 def peval(string):
     if "(" in string:
-        if ")" in string[::-1]:
-            temp = string[string.index('(')+1:len(string) - string[::-1].index(')')-1]
-            cmplstr = string[:string.index(temp)-1]+evaluate(temp)+string[string.index(temp)+len(temp)+1:]
-            if "(" in cmplstr:
-                peval(cmplstr)
-            else:
-                return cmplstr
-        else:
-            print("Error: Did not enclose parentheses. Try again!")
+        openp = []
+        closep = []
+        for i in range(0, len(string)):
+            if string[i] == "(":
+                openp.append(i)
+            elif string[i] == ")":
+                closep.append(i)
+        if len(closep) != len(openp):
+            print("Error: Parenthesis missing")
             main()
+        else:
+            workindex = 0
+            i = 0
+            while i < len(openp):
+                if openp[i] < closep[0]:
+                    workindex = openp[i]
+                i += 1
+            return string[:workindex]+evaluate(string[workindex+1:closep[0]])+string[closep[0]+1:]
 
     if ")" in string:
         print("Error: Unexpected ')'.")
@@ -123,6 +131,7 @@ def complete(string):
         if item in string:
             literal = False
     if string is not None or string != "":
+        print("BP: ", string)
         if not string[0].isdigit(): #Are there functions or uresolved variables?
             literal = False
 

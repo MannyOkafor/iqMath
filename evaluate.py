@@ -58,39 +58,23 @@ def addsub(string):
 
 def md(string):
     if "*" in string or "/" in string:
-        arg1 = ""
-        arg2 = ""
-        a1index = 0
-        a2index = 0
+        i = len(string)-1
         oper = None
-        for i in range(0,len(string)):
-            if string[i].isdigit() or string[i] == ".":
-                if oper is None:
-                    arg1 += string[i]
-                else:
-                    arg2 += string[i]
-                    a2index = i
-            elif string[i] == "+" or string[i] == "-":
-                if oper is None:
-                    arg1 = ""
-                    a1index = i+1
-                else:
-                    break
-            else:
-                if oper is None:
-                    oper = string[i]
-                else:
-                    break
+        while True:
+            if string[i] == "*" or string[i] == "/":
+                oper = string[i]
+                break
+            i -= 1
         if oper == "*":
-            temp = evaluate(string[:a1index]+str(float(arg1) * float(arg2))+string[a2index:])
-            return temp[:len(temp)-1] #-1 corrects for floating point arithmetic errors
+            return str(float(evaluate(string[:i]))*float(evaluate(string[i+1:])))
         else:
-            if float(arg2) == 0.0:
-                print("Error: Cannot divide by 0")
+            divisor = float(evaluate(string[i+1:]))
+            if divisor == 0.0:
+                print("Error: Can't divide by 0")
                 main()
                 return
-            temp = evaluate(string[:a1index]+str(float(arg1) / float(arg2))+string[a2index:])
-            return temp[:len(temp)-1]
+            else:
+                return str(float(evaluate(string[:i]))/divisor)
     else:
         return string
 
@@ -131,8 +115,9 @@ def complete(string):
         if item in string:
             literal = False
     if string is not None or string != "":
-        print("BP: ", string)
         if not string[0].isdigit(): #Are there functions or uresolved variables?
             literal = False
 
     return literal
+
+main()
